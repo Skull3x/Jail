@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<buildpath>
+	<buildpathentry kind="src" path=""/>
+	<buildpathentry external="true" kind="lib" path="C:/Users/hoyinm.PC-PC-ASUS/Downloads/PocketMine-MP.phar"/>
+	<buildpathentry kind="con" path="org.eclipse.php.core.LANGUAGE"/>
+	<buildpathentry external="true" kind="lib" path="C:/Users/hoyinm.PC-PC-ASUS/Downloads/pocketmine-mp_1.5dev-1126_7e539ec8_api-1.12.0.phar"/>
+</buildpath>

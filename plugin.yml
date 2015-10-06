@@ -1,0 +1,57 @@
+name: Jail
+main: hoyinm14mc\jail\Jail
+api: ["1.12.0", "1.13.0", "2.0.0"]
+version: 0.1-alpha
+author: hoyinm14mc
+
+commands:
+  jail:
+    usage: /jail <player> <jail> <time(minutes)> <reason..>
+    permission: jail.command.jail
+    description: Command to jail a player
+  unjail:
+    usage: /unjail <player>
+    permission: jail.command.unjail
+    description: Command to unjail(release) a player
+  setjail:
+    usage: /setjail <jail>
+    permission: jail.command.setjail
+    description: Sets a jail at sender's location
+    aliases: ["createjail"]
+  deljail:
+    usage: /deljail <jail>
+    permission: jail.command.deljail
+    description: Deletes a jail
+    aliases: ["rmjail", "remjail"]
+  jailed:
+    usage: /jailed
+    permission: jail.command.jailed
+    description: Get a list of jailed players
+  jails:
+    usage: /jails
+    permission: jail.command.jails
+    description: Get a list of jails
+    aliases: ["jaillist"]
+  jailtp:
+    usage: /jailtp <jail>
+    permission: jail.command.jailtp
+    description: Teleport to a jail
+
+permissions:
+  jail.command:
+    default: op
+    children:
+      jail.command.jail:
+        default: op
+      jail.command.unjail:
+        default: op
+      jail.command.setjail:
+        default: op
+      jail.command.deljail:
+        default: op
+      jail.command.jailed:
+        default: op
+      jail.command.jails:
+        default: op
+      jail.command.jailtp:
+        default: op
