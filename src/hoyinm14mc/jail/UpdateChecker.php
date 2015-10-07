@@ -38,18 +38,18 @@ class UpdateChecker{
 	 */
 	public function __construct($plugin, $channel){
 		$this->plugin = $plugin;
-   $this->channel = $channel;
- 	}
+		$this->channel = $channel;
+	}
 
 	private function getPlugin(){
 		return $this->plugin;
 	}
 
 	public function checkUpdate(){
-	    $this->getPlugin()->getServer()->getPluginManager()->callEvent($event = new UpdateCheckingEvent($this->getPlugin(), $this->channel));
-	    	if($event->isCancelled()){
-        		return false;
-     	}
+		$this->getPlugin()->getServer()->getPluginManager()->callEvent($event = new UpdateCheckingEvent($this->getPlugin(), $this->channel));
+		if($event->isCancelled()){
+			return false;
+		}
 		if($this->channel == "beta"){
 			$address = "https://api.github.com/repos/cybercube-hk/jail/releases";
 		} else{
@@ -59,7 +59,7 @@ class UpdateChecker{
 		$i = json_decode(Utils::getURL($address), true);
 		if($this->channel == "beta"){
 			$i = $i[0];
-			$this->newversion = substr($i["name"], 18);
+			$this->newversion = substr($i["name"], 6);
 			$this->dlurl = $i["assets"][0]["browser_download_url"];
 		}
 		$plugin = $this->getPlugin();

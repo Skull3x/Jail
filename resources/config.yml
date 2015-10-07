@@ -13,8 +13,10 @@ default-channel: beta
 check-update-time: 30
 ###################################
 
+# Add how many minutes to a player while punishing him/her?
+# Punishment will occur while the prisoner tries to destroy the jail
 punish-additional-minutes: 15
 
 # Version string of the config
 # DO NOT MODIFY TO MAKE SURE THE PLUGIN WORKS
-v: "0.2.1-alpha"
+v: "0.2.2-alpha"

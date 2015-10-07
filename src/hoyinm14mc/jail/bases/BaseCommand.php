@@ -24,16 +24,16 @@ use pocketmine\plugin\PluginBase;
 use pocketmine\command\CommandExecutor;
 
 abstract class BaseCommand extends PluginBase implements CommandExecutor{
-    
-    protected $plugin;
-    
-    public function __construct(Jail $plugin){
-        $this->plugin = $plugin;
-    }
-    
-    public function getPlugin(){
-        return $this->plugin;
-    }
-    
+
+	protected $plugin;
+
+	public function __construct(Jail $plugin){
+		$this->plugin = $plugin;
+	}
+
+	public function getPlugin(){
+		return $this->plugin;
+	}
+
 }
 ?>

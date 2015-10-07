@@ -26,21 +26,21 @@ use pocketmine\event\Cancellable;
 class UpdateCheckingEvent extends BaseEvent implements Cancellable{
 
 	public static $handlerList = null;
-	
+
 	private $channel;
 
 	public function __construct(Jail $plugin, $channel){
-	    $this->plugin = $plugin;
-	    $this->channel = $channel;
+		$this->plugin = $plugin;
+		$this->channel = $channel;
 		parent::__construct($plugin);
 	}
-	
+
 	public function getPlugin(){
-	    return $this->plugin;
+		return $this->plugin;
 	}
-	
+
 	public function getChannel(){
-	    return $this->channel;
+		return $this->channel;
 	}
 
 }

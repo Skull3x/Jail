@@ -25,22 +25,22 @@ use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
 
 class BlockListener extends BaseListener{
-    
-    public function onBlockBreak(BlockBreakEvent $event){
-        if($this->plugin->isJailed($event->getPlayer())){
-            $event->getPlayer()->sendMessage("§eYou are not allowed to destroy the jail!\nAdded ".$this->getPlugin()->getConfig()->get("punish-additional-minutes")." minutes as punishment.");
-            $this->getPlugin()->punish($event->getPlayer(), $this->getPlugin()->getConfig()->get("punish-additional-minutes"));
-            $event->setCancelled(true);
-        }
-    }
-    
-    public function onBlockPlace(BlockPlaceEvent $event){
-        if($this->plugin->isJailed($event->getPlayer())){
-            $event->getPlayer()->sendMessage("§eYou are not allowed to destroy the jail!\nAdded ".$this->getPlugin()->getConfig()->get("punish-additional-minutes")." minutes as punishment.");
-            $this->getPlugin()->punish($event->getPlayer(), $this->getPlugin()->getConfig()->get("punish-additional-minutes"));
-            $event->setCancelled(true);
-        }
-    }
-    
+
+	public function onBlockBreak(BlockBreakEvent $event){
+		if($this->plugin->isJailed($event->getPlayer())){
+			$event->getPlayer()->sendMessage("§eYou are not allowed to destroy the jail!\nAdded " . $this->getPlugin()->getConfig()->get("punish-additional-minutes") . " minutes as punishment.");
+			$this->getPlugin()->punish($event->getPlayer(), $this->getPlugin()->getConfig()->get("punish-additional-minutes"));
+			$event->setCancelled(true);
+		}
+	}
+
+	public function onBlockPlace(BlockPlaceEvent $event){
+		if($this->plugin->isJailed($event->getPlayer())){
+			$event->getPlayer()->sendMessage("§eYou are not allowed to destroy the jail!\nAdded " . $this->getPlugin()->getConfig()->get("punish-additional-minutes") . " minutes as punishment.");
+			$this->getPlugin()->punish($event->getPlayer(), $this->getPlugin()->getConfig()->get("punish-additional-minutes"));
+			$event->setCancelled(true);
+		}
+	}
+
 }
 ?>

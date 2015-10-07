@@ -24,14 +24,14 @@ use hoyinm14mc\jail\UpdateChecker;
 use hoyinm14mc\jail\bases\BaseTask;
 
 class UpdateCheckingTask extends BaseTask{
-    
-    public function onRun($tick){
-        if($this->getPlugin()->getConfig()->get("auto-update-checker") !== false){
-            $this->getPlugin()->getLogger()->info("Checking for update..");
-            $updatechecker = new UpdateChecker($this->getPlugin(), $this->getPlugin()->getConfig()->get("default-channel"));
-            $updatechecker->checkUpdate();
-        }
-    }
-    
+
+	public function onRun($tick){
+		if($this->getPlugin()->getConfig()->get("auto-update-checker") !== false){
+			$this->getPlugin()->getLogger()->info("Checking for update..");
+			$updatechecker = new UpdateChecker($this->getPlugin(), $this->getPlugin()->getConfig()->get("default-channel"));
+			$updatechecker->checkUpdate();
+		}
+	}
+
 }
 ?>
