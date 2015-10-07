@@ -19,4 +19,4 @@ punish-additional-minutes: 15
 
 # Version string of the config
 # DO NOT MODIFY TO MAKE SURE THE PLUGIN WORKS
-v: "0.2.2-alpha"
+v: "0.2.3-alpha"

@@ -48,7 +48,7 @@ class Jail extends PluginBase{
 
 	private static $instance = null;
 
-	const VERSION_STRING = "0.2.2-alpha";
+	const VERSION_STRING = "0.2.3-alpha";
 
 	public function onEnable(){
 		if(! is_dir($this->getDataFolder())){

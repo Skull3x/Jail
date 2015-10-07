@@ -34,6 +34,8 @@ class PlayerListener extends BaseListener{
 		$j = $this->plugin->data2->getAll();
 		if($this->plugin->hasPlayedBefore($event->getPlayer()) !== true){
 			$t[$event->getPlayer()->getName()]["jailed"] = false;
+			$this->plugin->data->setAll($t);
+			$this->plugin->data->save();
 		}
 		if(isset($t[$event->getPlayer()->getName()]["need-tp"])){
 			$event->getPlayer()->teleport($event->getPlayer()->getLevel()->getSafeSpawn());
