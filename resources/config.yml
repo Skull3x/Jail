@@ -1,0 +1,20 @@
+### Jail Configuration File
+
+###########Update Checker##########
+# Enable update checker?
+auto-update-checker: true
+
+# Default channel
+# Currently only support beta
+default-channel: beta
+
+# Every ?? minutes it checks whether there is update or not
+# MINUTES
+check-update-time: 30
+###################################
+
+punish-additional-minutes: 15
+
+# Version string of the config
+# DO NOT MODIFY TO MAKE SURE THE PLUGIN WORKS
+v: "0.2.1-alpha"

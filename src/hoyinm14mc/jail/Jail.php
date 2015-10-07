@@ -1,5 +1,22 @@
 <?php
 
+/*
+ * This file is the main class of Jail.
+ * Copyright (C) 2015 CyberCube-HK
+ *
+ * Jail is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Jail is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Jail. If not, see <http://www.gnu.org/licenses/>.
+ */
 namespace hoyinm14mc\jail;
 
 use hoyinm14mc\jail\listeners\PlayerListener;
@@ -14,29 +31,45 @@ use hoyinm14mc\jail\commands\JailsCommand;
 use hoyinm14mc\jail\commands\JailtpCommand;
 use hoyinm14mc\jail\tasks\Timer;
 use hoyinm14mc\jail\tasks\TipBroadcaster;
+use hoyinm14mc\jail\tasks\UpdateCheckingTask;
 use hoyinm14mc\jail\events\PlayerJailEvent;
 use hoyinm14mc\jail\events\PlayerUnjailEvent;
 use hoyinm14mc\jail\events\DeljailEvent;
 use hoyinm14mc\jail\events\SetjailEvent;
 use hoyinm14mc\jail\events\PlayerTeleportToJailEvent;
+use hoyinm14mc\jail\UpdateChecker;
 use pocketmine\plugin\PluginBase;
 use pocketmine\utils\Config;
 use pocketmine\Player;
 use pocketmine\level\Position;
-use pocketmine\nbt\tag\String;
 use pocketmine\level\Level;
 
 class Jail extends PluginBase{
     
     private static $instance = null;
     
+    const VERSION_STRING = "0.2.1-alpha";
+    
     public function onEnable(){
         if(!is_dir($this->getDataFolder())){
             mkdir($this->getDataFolder());
         }
+        $this->saveDefaultConfig();
+        if($this->getConfig()->get("v") != $this::VERSION_STRING){
+            unlink($this->getDataFolder()."config.yml");
+            $this->saveDefaultConfig();
+        }
+        $this->reloadConfig();
         $this->data = new Config($this->getDataFolder()."players.yml", Config::YAML, array());
         $this->data2 = new Config($this->getDataFolder()."jails.yml", Config::YAML, array());
         $this::$instance = $this;
+        $this->getLogger()->info("Checking for update..");
+        try{
+            $updatechecker = new UpdateChecker($this, $this->getConfig()->get("default-channel"));
+            $updatechecker->checkUpdate();
+        }catch(Exception $e){
+            echo "Unable to check update! Error: $e";
+        }
         $this->getCommand("jail")->setExecutor(new JailCommand($this));
         $this->getCommand("unjail")->setExecutor(new UnjailCommand($this));
         $this->getCommand("setjail")->setExecutor(new SetjailCommand($this));
@@ -49,6 +82,7 @@ class Jail extends PluginBase{
         $this->getServer()->getPluginManager()->registerEvents(new EntityListener($this), $this);
         $this->getServer()->getScheduler()->scheduleRepeatingTask(new Timer($this), 20);
         $this->getServer()->getScheduler()->scheduleRepeatingTask(new TipBroadcaster($this), 10);
+        $this->getServer()->getScheduler()->scheduleRepeatingTask(new UpdateCheckingTask($this), $this->getConfig()->get("check-update-time") * 1200);
         $this->getLogger()->info($this->colourMessage("&aLoaded Successfully!"));
     }
     
@@ -65,6 +99,11 @@ class Jail extends PluginBase{
         return (bool) isset($t[$player->getName()]);
     }
     
+    /**
+     *
+     * @param Player $player
+     * @return boolean
+     */
     public function isJailed(Player $player){
         $t = $this->data->getAll();
         return (bool) $t[$player->getName()]["jailed"];
@@ -231,6 +270,20 @@ class Jail extends PluginBase{
         $z = $t[$jail]["z"];
         $world = $this->getServer()->getLevelByName($t[$jail]["world"]);
         $player->teleport(new Position($x, $y, $z, $world));
+        return true;
+    }
+    
+    /**
+     * 
+     * @param Player $player
+     * @param integer $minutes
+     * @return boolean
+     */
+    public function punish(Player $player, $minutes=15){
+        $t = $this->data->getAll();
+        $t[$player->getName()]["minutes"] = $t[$player->getName()]["minutes"] + (int) $minutes;
+        $this->data->setAll($t);
+        $this->data->save();
         return true;
     }
     

@@ -17,29 +17,20 @@
  * You should have received a copy of the GNU General Public License
  * along with Jail. If not, see <http://www.gnu.org/licenses/>.
  */
-namespace hoyinm14mc\jail\events;
+namespace hoyinm14mc\jail\tasks;
 
 use hoyinm14mc\jail\Jail;
-use hoyinm14mc\jail\bases\BaseEvent;
-use pocketmine\event\Cancellable;
-use pocketmine\Player;
+use hoyinm14mc\jail\UpdateChecker;
+use hoyinm14mc\jail\bases\BaseTask;
 
-class PlayerUnjailEvent extends BaseEvent implements Cancellable{
+class UpdateCheckingTask extends BaseTask{
     
-    public static $handlerList = null;
-    
-    public $plugin;
-    
-    private $player;
-    
-    public function __construct(Jail $plugin, Player $player){
-        $this->plugin = $plugin;
-        $this->player = $player;
-        parent::__construct($plugin);
-    }
-    
-    public function getPlayer(){
-        return $this->player;
+    public function onRun($tick){
+        if($this->getPlugin()->getConfig()->get("auto-update-checker") !== false){
+            $this->getPlugin()->getLogger()->info("Checking for update..");
+            $updatechecker = new UpdateChecker($this->getPlugin(), $this->getPlugin()->getConfig()->get("default-channel"));
+            $updatechecker->checkUpdate();
+        }
     }
     
 }
