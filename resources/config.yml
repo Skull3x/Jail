@@ -2,7 +2,7 @@
 
 ###########Update Checker##########
 # Enable update checker?
-auto-update-checker: true
+auto-update-checker: false
 
 # Default channel
 # Currently only support beta
@@ -17,6 +17,10 @@ check-update-time: 30
 # Punishment will occur while the prisoner tries to destroy the jail
 punish-additional-minutes: 15
 
+# How much money do you want player to pay to bail?
+# money per minute
+money-per-minute: 20
+
 # Version string of the config
 # DO NOT MODIFY TO MAKE SURE THE PLUGIN WORKS
-v: "0.2.3-alpha"
+v: "0.3-alpha"

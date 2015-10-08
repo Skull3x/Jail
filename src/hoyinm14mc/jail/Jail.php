@@ -29,6 +29,7 @@ use hoyinm14mc\jail\commands\DeljailCommand;
 use hoyinm14mc\jail\commands\JailedCommand;
 use hoyinm14mc\jail\commands\JailsCommand;
 use hoyinm14mc\jail\commands\JailtpCommand;
+use hoyinm14mc\jail\commands\BailCommand;
 use hoyinm14mc\jail\tasks\Timer;
 use hoyinm14mc\jail\tasks\TipBroadcaster;
 use hoyinm14mc\jail\tasks\UpdateCheckingTask;
@@ -48,9 +49,12 @@ class Jail extends PluginBase{
 
 	private static $instance = null;
 
-	const VERSION_STRING = "0.2.3-alpha";
+	const VERSION_STRING = "0.3-alpha";
+	
+	private $eco = null;
 
 	public function onEnable(){
+	    $this->getLogger()->info("Loading configurations..");
 		if(! is_dir($this->getDataFolder())){
 			mkdir($this->getDataFolder());
 		}
@@ -70,6 +74,19 @@ class Jail extends PluginBase{
 		} catch(Exception $e){
 			echo "Unable to check update! Error: $e";
 		}
+		$this->getLogger()->info("Loading economy plugins..");
+		$plugins = ["EconomyAPI" /*, "PocketMoney", "MassiveEconomy", "GoldStd"*/];
+		foreach($plugins as $plugin_name){
+		    $plugin = $this->getServer()->getPluginManager()->getPlugin($plugin_name);
+		    if($plugin !== null && $this->eco === null){
+		        $this->eco = $plugin;
+		        $this->getLogger()->info("Loaded with ".$plugin_name."!");
+		    }
+		}
+		if($this->eco === null){
+		    $this->getLogger()->info("No economy plugin found!");
+		}
+		$this->getLogger()->info("Loading plugin..");
 		$this->getCommand("jail")->setExecutor(new JailCommand($this));
 		$this->getCommand("unjail")->setExecutor(new UnjailCommand($this));
 		$this->getCommand("setjail")->setExecutor(new SetjailCommand($this));
@@ -77,6 +94,7 @@ class Jail extends PluginBase{
 		$this->getCommand("jailed")->setExecutor(new JailedCommand($this));
 		$this->getCommand("jails")->setExecutor(new JailsCommand($this));
 		$this->getCommand("jailtp")->setExecutor(new JailtpCommand($this));
+		$this->getCommand("bail")->setExecutor(new BailCommand($this));
 		$this->getServer()->getPluginManager()->registerEvents(new PlayerListener($this), $this);
 		$this->getServer()->getPluginManager()->registerEvents(new BlockListener($this), $this);
 		$this->getServer()->getPluginManager()->registerEvents(new EntityListener($this), $this);
@@ -92,6 +110,10 @@ class Jail extends PluginBase{
 
 	public static function getInstance(){
 		return $this::$instance;
+	}
+	
+	public function getEco(){
+	    return $this->eco;
 	}
 
 	public function hasPlayedBefore(Player $player){

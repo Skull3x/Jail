@@ -1,7 +1,7 @@
 name: Jail
 main: hoyinm14mc\jail\Jail
 api: ["1.12.0", "1.13.0", "2.0.0"]
-version: 0.2.3-alpha
+version: 0.3-alpha
 author: hoyinm14mc
 
 commands:
@@ -37,6 +37,11 @@ commands:
     permission: jail.command.jailtp
     description: Teleport to a jail
     aliases: ["tpjail"]
+  bail:
+    usage: /bail
+    permission: jail.command.bail
+    description: Bail to release from jail!
+    aliases: ["jailbail"]
 
 permissions:
   jail.command:
@@ -56,3 +61,5 @@ permissions:
         default: op
       jail.command.jailtp:
         default: op
+      jail.command.bail:
+        default: true

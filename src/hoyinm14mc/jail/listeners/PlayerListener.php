@@ -38,7 +38,7 @@ class PlayerListener extends BaseListener{
 			$this->plugin->data->save();
 		}
 		if(isset($t[$event->getPlayer()->getName()]["need-tp"])){
-			$event->getPlayer()->teleport($event->getPlayer()->getLevel()->getSafeSpawn());
+			$event->getPlayer()->teleport($event->getPlayer()->getLevel()->getSpawn());
 			$event->getPlayer()->sendMessage($this->plugin->colourMessage("&6You have been unjailed!"));
 			unset($t[$event->getPlayer()->getName()]["need-tp"]);
 			$this->getPlugin()->data->setAll($t);
@@ -53,7 +53,7 @@ class PlayerListener extends BaseListener{
 
 	public function onCmd(PlayerCommandPreprocessEvent $event){
 		$msg = $event->getMessage();
-		if($msg{0} == "/"){
+		if($msg{0} == "/" && $msg != "/bail"){
 			if($this->plugin->isJailed($event->getPlayer())){
 				$event->getPlayer()->sendMessage($this->plugin->colourMessage("&cYou don't have permission for this!"));
 				$event->setCancelled(true);
@@ -68,7 +68,7 @@ class PlayerListener extends BaseListener{
 	}
 
 	public function onPlayerRespawn(PlayerRespawnEvent $event){
-		if($this->plugin->isJailed($event->getPlayer())){
+		if($this->plugin->hasPlayedBefore($event->getPlayer()) && $this->plugin->isJailed($event->getPlayer())){
 			$t = $this->getPlugin()->data->getAll();
 			$j = $this->getPlugin()->data2->getAll();
 			$jail = $t[$event->getPlayer()->getName()]["jail"];
