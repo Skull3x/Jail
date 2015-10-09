@@ -22,7 +22,7 @@ namespace hoyinm14mc\jail\economy;
 use hoyinm14mc\jail\bases\BaseEconomy;
 use pocketmine\Player;
 
-class Economyapi extends BaseEconomy{
+class Pocketmoney extends BaseEconomy{
     
     public function bail(Player $player){
         if($this->getPlugin()->isJailed($player) !== true){
@@ -30,15 +30,16 @@ class Economyapi extends BaseEconomy{
             return false;
         }
         $t = $this->getPlugin()->data->getAll();
-        $money = $this->getPlugin()->getEco()->getInstance()->myMoney($player);
-	     	if($money < ($this->getConfig()->get("money-per-minute")*($t[$player->getName()]["minutes"]+1))){
+        $money = $this->getPlugin()->getEco()->getMoney($player->getName());
+	     	if($money < ($this->getConfig()->get("money-per-minute")*($t[$player->getName()]["minutes"] + 1))){
 	        		$player->sendMessage($this->getPlugin()->colourMessage("&cYou don't have enough money to bail!\n&cYou need " . $this->getConfig()->get("money-per-minute")*($t[$player->getName()]["minutes"]+1)));
 	        		return false;
      		}
-     		$this->getPlugin()->getEco()->getInstance()->reduceMoney($player, $this->getPlugin()->getConfig()->get("money-per-minute")*($t[$player->getName()]["minutes"]+1));
+     		$this->getPlugin()->getEco()->setMoney($player->getName(), $money - $this->getPlugin()->getConfig()->get("money-per-minute")*($t[$player->getName()]["minutes"]+1));
      		$this->getPlugin()->unjail($player);
      		$player->sendMessage($this->getPlugin()->colourMessage("&aYou have been unjailed successfully!"));
-     		$player->sendMessage("Bank : -$" . $this->getConfig()->get("money-per-minute") * ($t[$player->getName()]["minutes"]+1) . " | $" . $this->getPlugin()->getEco()->getInstance()->myMoney($player) . " left");
+     		$money = $this->getPlugin()->getEco()->getMoney($player->getName());
+     		$player->sendMessage("Bank : -" . $this->getConfig()->get("money-per-minute") * ($t[$player->getName()]["minutes"]+1) . "PM | " . $money . "PM left");
 	     	return true;
     }
     

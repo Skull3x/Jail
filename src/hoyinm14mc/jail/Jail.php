@@ -22,6 +22,8 @@ namespace hoyinm14mc\jail;
 use hoyinm14mc\jail\listeners\PlayerListener;
 use hoyinm14mc\jail\listeners\BlockListener;
 use hoyinm14mc\jail\listeners\EntityListener;
+use hoyinm14mc\jail\listeners\sign\PlayerListener as SignPlayerListener;
+use hoyinm14mc\jail\listeners\sign\BlockListener as SignBlockListener;
 use hoyinm14mc\jail\commands\JailCommand;
 use hoyinm14mc\jail\commands\UnjailCommand;
 use hoyinm14mc\jail\commands\SetjailCommand;
@@ -75,7 +77,7 @@ class Jail extends PluginBase{
 			echo "Unable to check update! Error: $e";
 		}
 		$this->getLogger()->info("Loading economy plugins..");
-		$plugins = ["EconomyAPI" /*, "PocketMoney", "MassiveEconomy", "GoldStd"*/];
+		$plugins = ["EconomyAPI", "PocketMoney", "MassiveEconomy"];
 		foreach($plugins as $plugin_name){
 		    $plugin = $this->getServer()->getPluginManager()->getPlugin($plugin_name);
 		    if($plugin !== null && $this->eco === null){
@@ -98,6 +100,8 @@ class Jail extends PluginBase{
 		$this->getServer()->getPluginManager()->registerEvents(new PlayerListener($this), $this);
 		$this->getServer()->getPluginManager()->registerEvents(new BlockListener($this), $this);
 		$this->getServer()->getPluginManager()->registerEvents(new EntityListener($this), $this);
+		$this->getServer()->getPluginManager()->registerEvents(new SignPlayerListener($this), $this);
+		$this->getServer()->getPluginManager()->registerEvents(new SignBlockListener($this), $this);
 		$this->getServer()->getScheduler()->scheduleRepeatingTask(new Timer($this), 20);
 		$this->getServer()->getScheduler()->scheduleRepeatingTask(new TipBroadcaster($this), 10);
 		$this->getServer()->getScheduler()->scheduleRepeatingTask(new UpdateCheckingTask($this), $this->getConfig()->get("check-update-time") * 1200);
@@ -188,7 +192,7 @@ class Jail extends PluginBase{
 		$t[$player->getName()]["jailed"] = false;
 		$this->data->setAll($t);
 		$this->data->save();
-		$player->teleport($player->getLevel()->getSafeSpawn());
+		$player->teleport($player->getLevel()->getSpawn());
 		return true;
 	}
 

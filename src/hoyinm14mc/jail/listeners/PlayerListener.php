@@ -37,12 +37,9 @@ class PlayerListener extends BaseListener{
 			$this->plugin->data->setAll($t);
 			$this->plugin->data->save();
 		}
-		if(isset($t[$event->getPlayer()->getName()]["need-tp"])){
-			$event->getPlayer()->teleport($event->getPlayer()->getLevel()->getSpawn());
+		if($this->getPlugin()->isJailed($event->getPlayer()) && $t[$event->getPlayer()->getName()]["minutes"] < 0){
 			$event->getPlayer()->sendMessage($this->plugin->colourMessage("&6You have been unjailed!"));
-			unset($t[$event->getPlayer()->getName()]["need-tp"]);
-			$this->getPlugin()->data->setAll($t);
-			$this->getPlugin()->data->save();
+			$this->getPlugin()->unjail($event->getPlayer());
 		}
 		if($this->plugin->isJailed($event->getPlayer())){
 			$event->getPlayer()->sendPosition(new Position($j[$t[$event->getPlayer()->getName()]["jail"]]["x"], $j[$t[$event->getPlayer()->getName()]["jail"]]["y"], $j[$t[$event->getPlayer()->getName()]["jail"]]["z"], $this->plugin->getServer()->getLevelByName($j[$t[$event->getPlayer()->getName()]["jail"]]["world"])));
@@ -62,8 +59,15 @@ class PlayerListener extends BaseListener{
 	}
 
 	public function onInteract(PlayerInteractEvent $event){
+	    $available_blocks = [323, 63, 68];
 		if($this->plugin->isJailed($event->getPlayer())){
-			$event->setCancelled(true);
+		    $cancel = true;
+		    foreach($available_blocks as $id){
+		        if($event->getBlock()->getID() == $id){
+		            $cancel = false;
+		        }
+		    }
+			if($cancel !== false) $event->setCancelled(true);
 		}
 	}
 

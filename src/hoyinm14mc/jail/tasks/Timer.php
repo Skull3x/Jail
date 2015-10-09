@@ -37,15 +37,6 @@ class Timer extends BaseTask{
 						if($target !== null){
 							$this->plugin->unjail($target);
 							$target->sendMessage($this->plugin->colourMessage("&l&aTIME'S UP!\n&6You have been unjailed!"));
-						} else{
-							$t[$name]["need-tp"] = true;
-							$t[$name]["jailed"] = false;
-							unset($t[$name]["jail"]);
-							unset($t[$name]["minutes"]);
-							unset($t[$name]["seconds"]);
-							unset($t[$name]["reason"]);
-							$this->plugin->data->setAll($t);
-							$this->plugin->data->save();
 						}
 					} else{
 						$t[$name]["minutes"] = $t[$name]["minutes"] - 1;

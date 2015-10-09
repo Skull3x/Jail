@@ -63,3 +63,21 @@ permissions:
         default: op
       jail.command.bail:
         default: true
+  jail.sign:
+    default: false
+    children:
+      jail.sign.create:
+        default: op
+        children:
+          jail.sign.create.bail:
+            default: op
+      jail.sign.toggle:
+        default: op
+        children:
+          jail.sign.toggle.bail:
+            default: true
+      jail.sign.destroy:
+        default: op
+        children:
+          jail.sign.destroy.bail:
+            default: op

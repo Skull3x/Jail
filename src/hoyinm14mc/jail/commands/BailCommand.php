@@ -21,6 +21,8 @@ namespace hoyinm14mc\jail\commands;
 
 use hoyinm14mc\jail\bases\BaseCommand;
 use hoyinm14mc\jail\economy\Economyapi;
+use hoyinm14mc\jail\economy\Pocketmoney;
+use hoyinm14mc\jail\economy\Massiveeconomy;
 use pocketmine\command\CommandSender;
 use pocketmine\command\Command;
 use pocketmine\Player;
@@ -46,6 +48,16 @@ class BailCommand extends BaseCommand{
 	          			    case "EconomyAPI":
 	          			        $economy = new Economyapi($this->getPlugin());
 	          			        $economy->bail($issuer);
+	          			        return true;
+	          			    break;
+	          			    case "PocketMoney":
+	          			        $pocketmoney = new Pocketmoney($this->getPlugin());
+	          			        $pocketmoney->bail($issuer);
+	          			        return true;
+	          			    break;
+	          			    case "MassiveEconomy":
+	          			        $me = new Massiveeconomy($this->getPlugin());
+	          			        $me->bail($issuer);
 	          			        return true;
 	          			    break;
 	          			}
