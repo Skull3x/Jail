@@ -51,7 +51,7 @@ class Jail extends PluginBase{
 
 	private static $instance = null;
 
-	const VERSION_STRING = "0.3-alpha";
+	const VERSION_STRING = "1.0.0";
 	
 	private $eco = null;
 
@@ -311,6 +311,21 @@ class Jail extends PluginBase{
 		$this->data->setAll($t);
 		$this->data->save();
 		return true;
+	}
+	
+	/**
+	 * 
+	 * @param string $name
+	 */
+	public function forceUnjail($name){
+		$t = $this->data->getAll();
+		unset($t[$player->getName()]["jail"]);
+		unset($t[$player->getName()]["minutes"]);
+		unset($t[$player->getName()]["seconds"]);
+		unset($t[$player->getName()]["reason"]);
+		$t[$player->getName()]["jailed"] = false;
+		$this->data->setAll($t);
+		$this->data->save();
 	}
 
 }
