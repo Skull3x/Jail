@@ -52,11 +52,11 @@ class Jail extends PluginBase{
 	private static $instance = null;
 
 	const VERSION_STRING = "1.0.0";
-	
+
 	private $eco = null;
 
 	public function onEnable(){
-	    $this->getLogger()->info("Loading configurations..");
+		$this->getLogger()->info("Loading configurations..");
 		if(! is_dir($this->getDataFolder())){
 			mkdir($this->getDataFolder());
 		}
@@ -68,7 +68,7 @@ class Jail extends PluginBase{
 		$this->reloadConfig();
 		$this->data = new Config($this->getDataFolder() . "players.yml", Config::YAML, array());
 		$this->data2 = new Config($this->getDataFolder() . "jails.yml", Config::YAML, array());
-		$this::$instance = $this;
+		self::$instance = $this;
 		$this->getLogger()->info("Checking for update..");
 		try{
 			$updatechecker = new UpdateChecker($this, $this->getConfig()->get("default-channel"));
@@ -77,16 +77,20 @@ class Jail extends PluginBase{
 			echo "Unable to check update! Error: $e";
 		}
 		$this->getLogger()->info("Loading economy plugins..");
-		$plugins = ["EconomyAPI", "PocketMoney", "MassiveEconomy"];
+		$plugins = [
+				"EconomyAPI",
+				"PocketMoney",
+				"MassiveEconomy"
+		];
 		foreach($plugins as $plugin_name){
-		    $plugin = $this->getServer()->getPluginManager()->getPlugin($plugin_name);
-		    if($plugin !== null && $this->eco === null){
-		        $this->eco = $plugin;
-		        $this->getLogger()->info("Loaded with ".$plugin_name."!");
-		    }
+			$plugin = $this->getServer()->getPluginManager()->getPlugin($plugin_name);
+			if($plugin !== null && $this->eco === null){
+				$this->eco = $plugin;
+				$this->getLogger()->info("Loaded with " . $plugin_name . "!");
+			}
 		}
 		if($this->eco === null){
-		    $this->getLogger()->info("No economy plugin found!");
+			$this->getLogger()->info("No economy plugin found!");
 		}
 		$this->getLogger()->info("Loading plugin..");
 		$this->getCommand("jail")->setExecutor(new JailCommand($this));
@@ -113,13 +117,18 @@ class Jail extends PluginBase{
 	}
 
 	public static function getInstance(){
-		return $this::$instance;
-	}
-	
-	public function getEco(){
-	    return $this->eco;
+		return self::$instance;
 	}
 
+	public function getEco(){
+		return $this->eco;
+	}
+
+	/**
+	 * 
+	 * @param Player $player
+	 * @return boolean
+	 */
 	public function hasPlayedBefore(Player $player){
 		$t = $this->data->getAll();
 		return (bool) isset($t[$player->getName()]);
@@ -312,10 +321,10 @@ class Jail extends PluginBase{
 		$this->data->save();
 		return true;
 	}
-	
+
 	/**
-	 * 
-	 * @param string $name
+	 *
+	 * @param string $name        	
 	 */
 	public function forceUnjail($name){
 		$t = $this->data->getAll();
