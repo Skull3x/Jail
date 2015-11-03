@@ -32,12 +32,12 @@ class Economyapi extends BaseEconomy{
         $t = $this->getPlugin()->data->getAll();
         $money = $this->getPlugin()->getEco()->getInstance()->myMoney($player);
 	     	if($money < ($this->getConfig()->get("money-per-minute")*($t[$player->getName()]["minutes"]+1))){
-	        		$player->sendMessage($this->getPlugin()->colourMessage("&cYou don't have enough to pay the fine!\n&cYou need " . $this->getConfig()->get("money-per-minute")*($t[$player->getName()]["minutes"]+1)));
+	        		$player->sendMessage($this->getPlugin()->colourMessage("&cYou don't have enough money to bail!\n&cYou need " . $this->getConfig()->get("money-per-minute")*($t[$player->getName()]["minutes"]+1)));
 	        		return false;
      		}
      		$this->getPlugin()->getEco()->getInstance()->reduceMoney($player, $this->getPlugin()->getConfig()->get("money-per-minute")*($t[$player->getName()]["minutes"]+1));
      		$this->getPlugin()->unjail($player);
-     		$player->sendMessage($this->getPlugin()->colourMessage("&aYou are now free!"));
+     		$player->sendMessage($this->getPlugin()->colourMessage("&aYou have been unjailed successfully!"));
      		$player->sendMessage("Bank : -$" . $this->getConfig()->get("money-per-minute") * ($t[$player->getName()]["minutes"]+1) . " | $" . $this->getPlugin()->getEco()->getInstance()->myMoney($player) . " left");
 	     	return true;
     }
